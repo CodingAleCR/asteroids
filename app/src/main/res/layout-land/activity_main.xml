@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/button_margin"
+    tools:context=".views.MainActivity.MainActivity">
+
+    <TextView
+        android:id="@+id/tv_game_title"
+        style="@style/Base.TextAppearance.AppCompat.Display3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/righteous"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/colorAccent" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:stretchColumns="*">
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_play"
+                style="@style/Widget.Asteroids.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_play" />
+
+            <Button
+                android:id="@+id/btn_settings"
+                style="@style/Widget.Asteroids.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_settings" />
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/btn_about"
+                style="@style/Widget.Asteroids.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_about" />
+
+            <Button
+                android:id="@+id/btn_scores"
+                style="@style/Widget.Asteroids.Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_scores" />
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

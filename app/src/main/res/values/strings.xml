@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Asteroides</string>
+
+    <!-- Buttons -->
+    <string name="btn_play">Jugar</string>
+    <string name="btn_settings">Configuración</string>
+    <string name="btn_about">Acerca de</string>
+    <string name="btn_scores">Puntuaciones</string>
+    <string name="label_scores">Puntuaciones</string>
+    <string name="about_text">Este programa ha sido desarrollado como ejemplo en el curso de Android para demostrar cómo se pueden lanzar nuevas actividades desde la actividad principal.</string>
+    <string name="label_preferences">Preferencias</string>
+    <string name="label_about">Acerca de…</string>
+    <string name="label_search">Buscar</string>
+    <string name="label_settings">Configuración</string>
+    <string name="label_graphic_types">Tipo de gráficos</string>
+    <string name="text_graphic_types">Se escoge la representación de gráficos</string>
+    <string name="label_connection_types">Tipo de conexión</string>
+    <string name="text_connection_types">Se escoge la conexión para el modo multijugador</string>
+    <string name="label_fragments_number">Número de Fragmentos</string>
+    <string name="text_fragment_number">En cuantos trozos se divide un asteroide</string>
+    <string name="label_multiplayer_mode">Modo Multijugador</string>
+    <string name="label_max_players">Máximo de jugadores</string>
+    <string name="label_multiplayer_on">Activar Modo Multijugador</string>
+
+
+    <string name="helper_not_number">Ha de ser un número.</string>
+    <string name="helper_max_fragments">Máximo de fragmentos es 9.</string>
+</resources>
