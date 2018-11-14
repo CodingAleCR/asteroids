@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">Asteroides</string>
 
-    <!-- Buttons -->
     <string name="btn_play">Jugar</string>
     <string name="btn_settings">Configuración</string>
     <string name="btn_about">Acerca de</string>
@@ -22,8 +21,6 @@
     <string name="label_multiplayer_mode">Modo Multijugador</string>
     <string name="label_max_players">Máximo de jugadores</string>
     <string name="label_multiplayer_on">Activar Modo Multijugador</string>
-
-
     <string name="helper_not_number">Ha de ser un número.</string>
     <string name="helper_max_fragments">Máximo de fragmentos es 9.</string>
 </resources>

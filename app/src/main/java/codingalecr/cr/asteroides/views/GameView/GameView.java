@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import codingalecr.cr.asteroides.R;
 import codingalecr.cr.asteroides.utils.Graphic;
@@ -17,7 +19,7 @@ import java.util.List;
 public class GameView extends View {
     // //// NAVE //////
     private Graphic spaceship; // Gráfico de la spaceship
-    private int giroNave; // Incremento de dirección
+    private int shipRotation; // Incremento de dirección
     private double shipAcceleration; // aumento de velocidad
     private static final int MAX_SHIP_SPEED = 20;
     // Incremento estándar de giro y aceleración
@@ -99,7 +101,7 @@ public class GameView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected synchronized void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (Graphic asteroid : asteroids) {
             asteroid.drawGraphic(canvas);
@@ -107,7 +109,7 @@ public class GameView extends View {
         spaceship.drawGraphic(canvas);
     }
 
-    protected void updateMovement() {
+    protected synchronized void updateMovement() {
         long now = System.currentTimeMillis();
         if (lastUpdate + REFRESH_RATE > now) {
             return; // Salir si el período de proceso no se ha cumplido.
@@ -117,8 +119,8 @@ public class GameView extends View {
         lastUpdate = now;
         // Para la próxima vez
         // Actualizamos velocidad y dirección de la nave a partir de
-        // giroNave y aceleracionNave (según la entrada del jugador)
-        spaceship.setAngle((int) (spaceship.getAngle() + giroNave * movFactor));
+        // shipRotation y aceleracionNave (según la entrada del jugador)
+        spaceship.setAngle((int) (spaceship.getAngle() + shipRotation * movFactor));
         double nIncX = spaceship.getIncX() + shipAcceleration *
                 Math.cos(Math.toRadians(spaceship.getAngle())) * movFactor;
         double nIncY = spaceship.getIncY() + shipAcceleration *
@@ -128,7 +130,8 @@ public class GameView extends View {
             spaceship.setIncX(nIncX);
             spaceship.setIncY(nIncY);
         }
-        spaceship.increasePos(movFactor); // Actualizamos posición
+        spaceship.increasePos(movFactor);
+        // Actualizamos posición
         for (Graphic asteroid : asteroids) {
             asteroid.increasePos(movFactor);
         }
@@ -141,5 +144,95 @@ public class GameView extends View {
                 updateMovement();
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+
+        boolean processed = true;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                shipAcceleration = +STEP_SHIP_ACCELERATION;
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                shipRotation = -STEP_SHIP_ROTATION;
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                shipRotation = +STEP_SHIP_ROTATION;
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+//                shootMissile()
+                break;
+
+            default:
+                processed = false;
+                break;
+        }
+        return processed;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        super.onKeyUp(keyCode, event);
+
+        boolean processed = true;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                shipAcceleration = 0;
+                break;
+
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                shipRotation = 0;
+                break;
+
+            default:
+                processed = false;
+                break;
+        }
+        return processed;
+    }
+
+    private float mX, mY = 0;
+    private boolean shooting = false;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                shooting = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float dx = Math.abs(x - mX);
+                float dy = Math.abs(y - mY);
+                if (dy < 6 && dx > 6) {
+                    shipRotation = Math.round((x - mX) / 2);
+                    shooting = false;
+                } else if (dx < 6 && dy > 6) {
+                    shipAcceleration = Math.round((mY - y) / 25);
+                    shooting = false;
+                }
+                break;
+
+            case MotionEvent.ACTION_UP:
+                shipRotation = 0;
+                shipAcceleration = 0;
+                if (shooting) {
+//                        shootMissile()
+                }
+                break;
+        }
+        mX = x;
+        mY = y;
+        return true;
     }
 }

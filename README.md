@@ -18,18 +18,19 @@ _Extras:_
 
 ### Unidad 5
 - [X] Ejercicio: Introduciendo movimiento en Asteroides
-- [ ] Ejercicio: Introduciendo secciones críticas en Java (synchronized). Nota: _Tras realizar este ejercicio puede que la entrada en la actividad
+- [X] Ejercicio: Introduciendo secciones críticas en Java (synchronized). Nota: _Tras realizar este ejercicio puede que la entrada en la actividad
 Juego se retrase unos segundos. Se explicó en el repaso de la U5 la
 forma de resolverlo._
-- [ ] Ejercicio: Manejo de la nave con el teclado
-- [ ] Práctica: Manejo de la nave con el teclado
+- [X] Ejercicio: Manejo de la nave con el teclado
+- [X] Práctica: Manejo de la nave con el teclado
 - [ ] Ejercicio: Manejo de la nave con la pantalla táctil (importante)
 - [ ] Ejercicio: Manejo de la nave con el sensor de orientación
 - [ ] Práctica: Configurando tipo de entrada en preferencias
 - [ ] Ejercicio: Introduciendo un misil en Asteroides (importante)
 
 _Extras:_
-- [ ] Práctica: Manejo de la nave con el sensor de aceleración - [ ] Práctica: Aceleración de la nave con sensores
+- [ ] Práctica: Manejo de la nave con el sensor de aceleración
+- [ ] Práctica: Aceleración de la nave con sensores
 - [ ] Desafio: Disparando varios misiles a la vez
 - [ ] Desafio: Un misil basado en AnimationDrawable: En caso de que el usuario escoja gráficos en mapa de bits el drawable asignado al misil será de tipo AnimationDrawable, de forma que se muestre una animación con los tres gráficos proporcionados para el misil.
 
