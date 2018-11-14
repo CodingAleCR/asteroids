@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale
-        android:duration="2000"
+        android:duration="1000"
         android:fromXScale="3"
         android:fromYScale="3"
         android:pivotX="50%"
@@ -10,7 +10,7 @@
         android:toYScale="1" />
 
     <rotate
-        android:duration="2000"
+        android:duration="1000"
         android:fromDegrees="0"
         android:pivotX="50%"
         android:pivotY="50%"

@@ -23,10 +23,10 @@ Juego se retrase unos segundos. Se explicó en el repaso de la U5 la
 forma de resolverlo._
 - [X] Ejercicio: Manejo de la nave con el teclado
 - [X] Práctica: Manejo de la nave con el teclado
-- [ ] Ejercicio: Manejo de la nave con la pantalla táctil (importante)
-- [ ] Ejercicio: Manejo de la nave con el sensor de orientación
-- [ ] Práctica: Configurando tipo de entrada en preferencias
-- [ ] Ejercicio: Introduciendo un misil en Asteroides (importante)
+- [X] Ejercicio: Manejo de la nave con la pantalla táctil (importante)
+- [X] Ejercicio: Manejo de la nave con el sensor de orientación
+- [X] Práctica: Configurando tipo de entrada en preferencias
+- [X] Ejercicio: Introduciendo un misil en Asteroides (importante)
 
 _Extras:_
 - [ ] Práctica: Manejo de la nave con el sensor de aceleración

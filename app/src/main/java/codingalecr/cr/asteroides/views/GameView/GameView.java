@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
@@ -16,7 +20,7 @@ import codingalecr.cr.asteroides.utils.Graphic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameView extends View {
+public class GameView extends View implements SensorEventListener {
     // //// NAVE //////
     private Graphic spaceship; // Gráfico de la spaceship
     private int shipRotation; // Incremento de dirección
@@ -29,7 +33,7 @@ public class GameView extends View {
     // //// ASTEROIDES //////
     private List<Graphic> asteroids; // Lista con los Asteroides
     private int asteroidsQty = 5; // Número inicial de asteroids
-    private int fragmentQty = 3; // Fragmentos en que se divide
+    private int fragmentQty; // Fragmentos en que se divide
 
     // //// THREAD Y TIEMPO //////
     // Thread encargado de procesar el juego
@@ -39,6 +43,9 @@ public class GameView extends View {
     // Cuando se realizó el último proceso
     private long lastUpdate = 0;
 
+    // //// SPACECRAFT CONTROLS //////
+    private String mControlType;
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         Drawable drawableNave, drawableAsteroid, drawableMisil;
@@ -46,12 +53,12 @@ public class GameView extends View {
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
         try {
-            fragmentQty = Integer.parseInt(pref.getString("fragments", "3"));
+            fragmentQty = Integer.parseInt(pref.getString("fragments", String.valueOf(getResources().getInteger(R.integer.default_fragments))));
         } catch (Exception ex) {
             ex.printStackTrace();
             fragmentQty = getResources().getInteger(R.integer.default_fragments);
         }
-
+        mControlType = pref.getString("controls", getResources().getString(R.string.default_controls));
 
         if (pref.getString("graphics", "1").equals("0")) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -77,6 +84,16 @@ public class GameView extends View {
             asteroid.setAngle((int) (Math.random() * 360));
             asteroid.setRotation((int) (Math.random() * 8 - 4));
             asteroids.add(asteroid);
+        }
+
+        if (mControlType.equals("sensors")) {
+            //Sensors
+            SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ORIENTATION);
+            if (!sensorList.isEmpty()) {
+                Sensor orientationSensor = sensorList.get(0);
+                mSensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_GAME);
+            }
         }
     }
 
@@ -137,6 +154,22 @@ public class GameView extends View {
         }
     }
 
+    private boolean hasInitialValue = false;
+    private float initialValue;
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float value = sensorEvent.values[1];
+        if (!hasInitialValue) {
+            initialValue = value;
+            hasInitialValue = true;
+        }
+        shipRotation = (int) ((value-initialValue)/3);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
     class GameThread extends Thread {
         @Override
         public void run() {
@@ -149,6 +182,7 @@ public class GameView extends View {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
+        if (!mControlType.equals("keyboard")) return false;
 
         boolean processed = true;
         switch (keyCode) {
@@ -179,6 +213,7 @@ public class GameView extends View {
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         super.onKeyUp(keyCode, event);
+        if (!mControlType.equals("keyboard")) return false;
 
         boolean processed = true;
         switch (keyCode) {
@@ -204,6 +239,7 @@ public class GameView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
+        if (!mControlType.equals("touchscreen")) return false;
         float x = event.getX();
         float y = event.getY();
 

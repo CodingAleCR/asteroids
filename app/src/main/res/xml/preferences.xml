@@ -7,12 +7,19 @@
         android:summary="Se reproduce música de fondo"
         android:title="Reproducir música" />
     <ListPreference
-        android:defaultValue="@string/default_graphics"
-        android:entries="@array/graphicTypes"
-        android:entryValues="@array/graphicTypesValues"
-        android:key="graphics"
-        android:summary="@string/text_graphic_types"
-        android:title="@string/label_graphic_types" />
+    android:defaultValue="@string/default_graphics"
+    android:entries="@array/graphicTypes"
+    android:entryValues="@array/graphicTypesValues"
+    android:key="graphics"
+    android:summary="@string/text_graphic_types"
+    android:title="@string/label_graphic_types" />
+    <ListPreference
+        android:defaultValue="@string/default_controls"
+        android:entries="@array/controlTypes"
+        android:entryValues="@array/controlTypesValues"
+        android:key="controls"
+        android:summary="@string/text_control_types"
+        android:title="@string/label_control_types" />
     <EditTextPreference
         android:defaultValue="@integer/default_fragments"
         android:inputType="number"

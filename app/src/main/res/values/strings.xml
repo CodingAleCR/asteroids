@@ -16,6 +16,8 @@
     <string name="text_graphic_types">Se escoge la representación de gráficos</string>
     <string name="label_connection_types">Tipo de conexión</string>
     <string name="text_connection_types">Se escoge la conexión para el modo multijugador</string>
+    <string name="label_control_types">Controles</string>
+    <string name="text_control_types">Escoge como prefieres manejar la nave.</string>
     <string name="label_fragments_number">Número de Fragmentos</string>
     <string name="text_fragment_number">En cuantos trozos se divide un asteroide</string>
     <string name="label_multiplayer_mode">Modo Multijugador</string>

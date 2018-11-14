@@ -18,4 +18,14 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+    <string-array name="controlTypes">
+        <item>Teclado</item>
+        <item>Pantalla Táctil</item>
+        <item>Sensores</item>
+    </string-array>
+    <string-array name="controlTypesValues">
+        <item>keyboard</item>
+        <item>touchscreen</item>
+        <item>sensors</item>
+    </string-array>
 </resources>
