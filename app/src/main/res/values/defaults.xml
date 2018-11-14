@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="default_fragments">3</integer>
-    <string name="default_graphics">1</string>
+    <string name="default_graphics">0</string>
     <string name="default_controls">touchscreen</string>
     <bool name="default_music">true</bool>
 </resources>

@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RectShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -46,6 +49,12 @@ public class GameView extends View implements SensorEventListener {
     // //// SPACECRAFT CONTROLS //////
     private String mControlType;
 
+    // //// MISSILE //////
+    private Graphic missile;
+    private static int STEP_MISSILE_SPEED = 12;
+    private boolean activeMissile = false;
+    private int missileTime;
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
         Drawable drawableNave, drawableAsteroid, drawableMisil;
@@ -53,27 +62,34 @@ public class GameView extends View implements SensorEventListener {
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
         try {
-            fragmentQty = Integer.parseInt(pref.getString("fragments", String.valueOf(getResources().getInteger(R.integer.default_fragments))));
+            fragmentQty = Integer.parseInt(pref.getString(
+                    "fragments",
+                    String.valueOf(getResources().getInteger(R.integer.default_fragments))
+            ));
         } catch (Exception ex) {
             ex.printStackTrace();
             fragmentQty = getResources().getInteger(R.integer.default_fragments);
         }
         mControlType = pref.getString("controls", getResources().getString(R.string.default_controls));
 
-        if (pref.getString("graphics", "1").equals("0")) {
+        if (pref.getString("graphics", getResources().getString(R.string.default_graphics)).equals("0")) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            setBackgroundColor(Color.BLACK);
-
+            setBackgroundResource(R.drawable.ic_background);
             drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.ic_large_asteroid);
             drawableNave = AppCompatResources.getDrawable(context, R.drawable.ic_spacecraft);
+            drawableMisil = getVectorMissile();
         } else {
             setLayerType(View.LAYER_TYPE_HARDWARE, null);
             drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.asteroide1);
             drawableNave = AppCompatResources.getDrawable(context, R.drawable.nave);
+            drawableMisil = AppCompatResources.getDrawable(context, R.drawable.misil1);
         }
 
         assert drawableNave != null;
         spaceship = new Graphic(this, drawableNave);
+
+        assert drawableMisil != null;
+        missile = new Graphic(this, drawableMisil);
 
         asteroids = new ArrayList<>();
         for (int i = 0; i < asteroidsQty; i++) {
@@ -89,12 +105,22 @@ public class GameView extends View implements SensorEventListener {
         if (mControlType.equals("sensors")) {
             //Sensors
             SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-            List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_ORIENTATION);
+            List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_GRAVITY);
             if (!sensorList.isEmpty()) {
                 Sensor orientationSensor = sensorList.get(0);
                 mSensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_GAME);
             }
         }
+    }
+
+    @NonNull
+    private ShapeDrawable getVectorMissile() {
+        ShapeDrawable dMissile = new ShapeDrawable(new RectShape());
+        dMissile.getPaint().setColor(Color.MAGENTA);
+        dMissile.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+        dMissile.setIntrinsicWidth(15);
+        dMissile.setIntrinsicHeight(3);
+        return dMissile;
     }
 
     @Override
@@ -118,15 +144,30 @@ public class GameView extends View implements SensorEventListener {
     }
 
     @Override
-    protected synchronized void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (Graphic asteroid : asteroids) {
-            asteroid.drawGraphic(canvas);
+        synchronized (asteroids) {
+            for (Graphic asteroid : asteroids) {
+                asteroid.drawGraphic(canvas);
+            }
         }
         spaceship.drawGraphic(canvas);
+
+        if (activeMissile) {
+            missile.drawGraphic(canvas);
+        }
     }
 
-    protected synchronized void updateMovement() {
+    class GameThread extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                updateMovement();
+            }
+        }
+    }
+
+    protected void updateMovement() {
         long now = System.currentTimeMillis();
         if (lastUpdate + REFRESH_RATE > now) {
             return; // Salir si el período de proceso no se ha cumplido.
@@ -152,30 +193,38 @@ public class GameView extends View implements SensorEventListener {
         for (Graphic asteroid : asteroids) {
             asteroid.increasePos(movFactor);
         }
-    }
 
-    private boolean hasInitialValue = false;
-    private float initialValue;
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        float value = sensorEvent.values[1];
-        if (!hasInitialValue) {
-            initialValue = value;
-            hasInitialValue = true;
-        }
-        shipRotation = (int) ((value-initialValue)/3);
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-
-    class GameThread extends Thread {
-        @Override
-        public void run() {
-            while (true) {
-                updateMovement();
+        if (activeMissile) {
+            missile.increasePos(movFactor);
+            if (missileTime < 0) {
+                activeMissile = false;
+            } else {
+                for (int i = 0; i < asteroids.size(); i++) {
+                    if (missile.verifyCollision(asteroids.get(i))) {
+                        destroyAsteroid(i);
+                        break;
+                    }
+                }
             }
+        }
+    }
+
+    private void shootMissile() {
+        missile.setCenX(spaceship.getCenX());
+        missile.setCenY(spaceship.getCenY());
+        missile.setAngle(spaceship.getAngle());
+        missile.setIncX(Math.cos(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
+        missile.setIncY(Math.sin(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
+        missileTime = (int) Math.min(this.getWidth() / Math.abs(missile.getIncX()),
+                this.getHeight() / Math.abs(missile.getIncY())) - 2;
+        activeMissile = true;
+    }
+
+    private void destroyAsteroid(int i) {
+        synchronized (asteroids) {
+            asteroids.remove(i);
+            activeMissile = false;
+            this.postInvalidate();
         }
     }
 
@@ -200,7 +249,7 @@ public class GameView extends View implements SensorEventListener {
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
-//                shootMissile()
+                shootMissile();
                 break;
 
             default:
@@ -239,9 +288,10 @@ public class GameView extends View implements SensorEventListener {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         super.onTouchEvent(event);
-        if (!mControlType.equals("touchscreen")) return false;
         float x = event.getX();
         float y = event.getY();
+
+        boolean processed = true;
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -251,24 +301,52 @@ public class GameView extends View implements SensorEventListener {
                 float dx = Math.abs(x - mX);
                 float dy = Math.abs(y - mY);
                 if (dy < 6 && dx > 6) {
-                    shipRotation = Math.round((x - mX) / 2);
                     shooting = false;
+                    if (mControlType.equals("touchscreen")) shipRotation = Math.round((x - mX) / 2);
                 } else if (dx < 6 && dy > 6) {
-                    shipAcceleration = Math.round((mY - y) / 25);
                     shooting = false;
+                    if (mControlType.equals("touchscreen")) shipAcceleration = Math.round((mY - y) / 25);
                 }
                 break;
 
             case MotionEvent.ACTION_UP:
-                shipRotation = 0;
-                shipAcceleration = 0;
+                if (mControlType.equals("touchscreen")) {
+                    shipRotation = 0;
+                    shipAcceleration = 0;
+                    processed = false;
+                }
                 if (shooting) {
-//                        shootMissile()
+                    shootMissile();
                 }
                 break;
         }
         mX = x;
         mY = y;
-        return true;
+        return processed;
+    }
+
+    private boolean hasInitialRotationValue = false;
+    private float initialRotationValue;
+    private boolean hasInitialAccelerationValue = false;
+    private float initialAccelerationValue;
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float accelerationValue = sensorEvent.values[0];
+        float rotationValue = sensorEvent.values[1];
+        if (!hasInitialAccelerationValue) {
+            initialAccelerationValue = accelerationValue;
+            hasInitialAccelerationValue = true;
+        }
+        if (!hasInitialRotationValue) {
+            initialRotationValue = rotationValue;
+            hasInitialRotationValue = true;
+        }
+        shipRotation = (int) ((rotationValue - initialRotationValue) / 2);
+        shipAcceleration = (accelerationValue - initialAccelerationValue) / 20;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
     }
 }

@@ -29,8 +29,8 @@ forma de resolverlo._
 - [X] Ejercicio: Introduciendo un misil en Asteroides (importante)
 
 _Extras:_
-- [ ] Práctica: Manejo de la nave con el sensor de aceleración
-- [ ] Práctica: Aceleración de la nave con sensores
+- [X] Práctica: Manejo de la nave con el sensor de aceleración
+- [X] Práctica: Aceleración de la nave con sensores
 - [ ] Desafio: Disparando varios misiles a la vez
 - [ ] Desafio: Un misil basado en AnimationDrawable: En caso de que el usuario escoja gráficos en mapa de bits el drawable asignado al misil será de tipo AnimationDrawable, de forma que se muestre una animación con los tres gráficos proporcionados para el misil.
 
