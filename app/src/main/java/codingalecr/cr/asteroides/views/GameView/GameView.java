@@ -51,6 +51,7 @@ public class GameView extends View implements SensorEventListener {
 
     // //// SPACECRAFT CONTROLS //////
     private String mControlType;
+    private SensorManager mSensorManager;
 
     // //// MISSILE //////
     private List<Graphic> missiles;
@@ -59,7 +60,7 @@ public class GameView extends View implements SensorEventListener {
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Drawable drawableSpaceship, drawableAsteroid, drawableMissile;
+        Drawable drawableSpaceship, drawableAsteroid;
 
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
@@ -104,12 +105,8 @@ public class GameView extends View implements SensorEventListener {
 
         if (mControlType.equals("sensors")) {
             //Sensors
-            SensorManager mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-            List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_GRAVITY);
-            if (!sensorList.isEmpty()) {
-                Sensor orientationSensor = sensorList.get(0);
-                mSensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_GAME);
-            }
+            mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            registerSensorListener();
         }
     }
 
@@ -168,8 +165,8 @@ public class GameView extends View implements SensorEventListener {
         }
 
         public synchronized void resumeGame() {
-            paused = true;
-            GameThread.this.notify();
+            paused = false;
+            notify();
         }
 
         public void stopGame() {
@@ -185,9 +182,8 @@ public class GameView extends View implements SensorEventListener {
                 synchronized (this) {
                     while (paused) {
                         try {
-                            GameView.this.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            wait();
+                        } catch (Exception e) {
                         }
                     }
                 }
@@ -431,5 +427,21 @@ public class GameView extends View implements SensorEventListener {
 
     public GameThread getThread() {
         return thread;
+    }
+
+    public void registerSensorListener() {
+        if (mControlType.equals("sensors")) {
+            List<Sensor> sensorList = mSensorManager.getSensorList(Sensor.TYPE_GRAVITY);
+            if (!sensorList.isEmpty()) {
+                Sensor orientationSensor = sensorList.get(0);
+                mSensorManager.registerListener(this, orientationSensor, SensorManager.SENSOR_DELAY_GAME);
+            }
+        }
+    }
+
+    public void unregisterSensorListener() {
+        if (mControlType.equals("sensors")) {
+            mSensorManager.unregisterListener(this);
+        }
     }
 }

@@ -1,20 +1,20 @@
 ## Descripción
 Asteroids es un popular videojuego de arcade basado en vectores lanzado en 1979 por Atari. El objetivo del juego es disparar y destruir asteroides evitando chocar contra los fragmentos de estos. Fue uno de los juegos más populares de la Época Dorada de los videojuegos arcade.
 
-Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android.
+Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android como proyecto educativo.
 
 ### Unidad 6
 - [X] Ejercicio: Aplicando eventos del ciclo de vida en la actividad Juego de
  (importante)
 Asteroides
-- [ ] Práctica: Aplicando eventos del ciclo de vida en la actividad inicial.
-- [ ] Práctica: Aplicando eventos del ciclo de vida en la actividad Juego para desactivar los sensores (importante)
-- [ ] Práctica: Guardando el estado en la actividad inicial
+- [X] Práctica: Aplicando eventos del ciclo de vida en la actividad inicial.
+- [X] Práctica: Aplicando eventos del ciclo de vida en la actividad Juego para desactivar los sensores (importante)
+- [X] Práctica: Guardando el estado en la actividad inicial
 - [ ] Ejercicio: Introduciendo audio con SoundPool en Asteroides.
 
 _Extras:_
-- [ ] Otras mejoras propuestas que quieras añadir 
-- [X] Entrega dentro de plazo (Entrega para antes del 17 de noviembre)
+- [X] Propuesto: Reproducir musica de acuerdo a las preferencias.
+- [X] Entrega dentro de plazo (Entrega para antes del 17 de noviembre).
 
 ### Unidad 5
 - [X] Ejercicio: Introduciendo movimiento en Asteroides

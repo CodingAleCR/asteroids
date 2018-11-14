@@ -1,7 +1,7 @@
 package codingalecr.cr.asteroides.views.PreferenceActivity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
 class PreferencesActivity : AppCompatActivity() {
 

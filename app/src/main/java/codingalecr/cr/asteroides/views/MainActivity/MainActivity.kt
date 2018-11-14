@@ -1,5 +1,6 @@
 package codingalecr.cr.asteroides.views.MainActivity
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
@@ -13,8 +14,7 @@ import codingalecr.cr.asteroides.views.GameActivity.GameActivity
 import codingalecr.cr.asteroides.views.PreferenceActivity.PreferencesActivity
 import codingalecr.cr.asteroides.views.ScoresActivity.ScoresActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.startActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
             )
         )
     }
+
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,40 @@ class MainActivity : AppCompatActivity() {
         btn_settings.startAnimation(fadeIn)
         btn_about.startAnimation(fadeIn)
         btn_scores.startAnimation(fadeIn)
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.audio)
+    }
+
+    fun isMusicEnabled(): Boolean {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        return pref.getBoolean("music", resources.getBoolean(R.bool.default_music))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (isMusicEnabled())
+            mediaPlayer.start()
+    }
+
+    override fun onStop() {
+        if (isMusicEnabled())
+            mediaPlayer.pause()
+        super.onStop()
+    }
+
+    override fun onSaveInstanceState(saveInstanceState: Bundle) {
+        super.onSaveInstanceState(saveInstanceState)
+        if (isMusicEnabled()) {
+            mediaPlayer.pause()
+            saveInstanceState.putInt("musicMillisecond", mediaPlayer.currentPosition)
+        }
+    }
+
+    override fun onRestoreInstanceState(saveInstanceState: Bundle?) {
+        super.onRestoreInstanceState(saveInstanceState)
+        if (saveInstanceState != null && isMusicEnabled()) {
+            mediaPlayer.seekTo(saveInstanceState.getInt("musicMillisecond"))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -71,30 +107,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchGame() {
-        startActivity(intentFor<GameActivity>())
+        startActivity<GameActivity>()
     }
 
     private fun launchPreferences() {
-        startActivity(intentFor<PreferencesActivity>())
+        startActivity<PreferencesActivity>()
     }
 
     private fun launchAboutActivity() {
-        startActivity(intentFor<AboutActivity>())
+        startActivity<AboutActivity>()
     }
 
     private fun launchScoreList() {
-        startActivity(intentFor<ScoresActivity>())
-    }
-
-    private fun showPreferences() {
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
-        val s = "Música: ${pref.getBoolean("music", true)}, " +
-                "Gráficos: ${pref.getString("graphics", "?")}, " +
-                "Fragmentos: ${pref.getString("fragments", "0")}, " +
-                "Gráficos: ${pref.getString("graphics", "?")}, " +
-                "Modo Multijugador: ${pref.getBoolean("multiplayer_mode", false)}, " +
-                "Max. Jugadores: ${pref.getString("player_quantity", "0")}, " +
-                "Tipo Conexion: ${pref.getString("connection", "?")}"
-        toast(s)
+        startActivity<ScoresActivity>()
     }
 }

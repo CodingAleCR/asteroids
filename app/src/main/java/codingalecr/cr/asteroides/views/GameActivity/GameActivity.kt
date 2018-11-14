@@ -12,18 +12,20 @@ class GameActivity : AppCompatActivity() {
         setContentView(R.layout.activity_game)
     }
 
-    override fun onPause() {
-        super.onPause()
-        gameview.thread.pauseGame()
-    }
-
     override fun onResume() {
         super.onResume()
         gameview.thread.resumeGame()
+        gameview.registerSensorListener()
+    }
+
+    override fun onPause() {
+        gameview.unregisterSensorListener()
+        gameview.thread.pauseGame()
+        super.onPause()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         gameview.thread.stopGame()
+        super.onDestroy()
     }
 }
