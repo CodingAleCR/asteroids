@@ -3,6 +3,7 @@ package codingalecr.cr.asteroides.views.GameView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.*;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
@@ -10,10 +11,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -50,14 +53,13 @@ public class GameView extends View implements SensorEventListener {
     private String mControlType;
 
     // //// MISSILE //////
-    private Graphic missile;
+    private List<Graphic> missiles;
     private static int STEP_MISSILE_SPEED = 12;
-    private boolean activeMissile = false;
-    private int missileTime;
+    private List<Integer> missileTimes;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Drawable drawableNave, drawableAsteroid, drawableMisil;
+        Drawable drawableSpaceship, drawableAsteroid, drawableMissile;
 
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
@@ -76,20 +78,18 @@ public class GameView extends View implements SensorEventListener {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             setBackgroundResource(R.drawable.ic_background);
             drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.ic_large_asteroid);
-            drawableNave = AppCompatResources.getDrawable(context, R.drawable.ic_spacecraft);
-            drawableMisil = getVectorMissile();
+            drawableSpaceship = AppCompatResources.getDrawable(context, R.drawable.ic_spaceship);
         } else {
             setLayerType(View.LAYER_TYPE_HARDWARE, null);
             drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.asteroide1);
-            drawableNave = AppCompatResources.getDrawable(context, R.drawable.nave);
-            drawableMisil = AppCompatResources.getDrawable(context, R.drawable.misil1);
+            drawableSpaceship = AppCompatResources.getDrawable(context, R.drawable.nave);
         }
 
-        assert drawableNave != null;
-        spaceship = new Graphic(this, drawableNave);
+        assert drawableSpaceship != null;
+        spaceship = new Graphic(this, drawableSpaceship);
 
-        assert drawableMisil != null;
-        missile = new Graphic(this, drawableMisil);
+        missiles = new ArrayList<>();
+        missileTimes = new ArrayList<>();
 
         asteroids = new ArrayList<>();
         for (int i = 0; i < asteroidsQty; i++) {
@@ -153,8 +153,10 @@ public class GameView extends View implements SensorEventListener {
         }
         spaceship.drawGraphic(canvas);
 
-        if (activeMissile) {
-            missile.drawGraphic(canvas);
+        synchronized (missiles) {
+            for (Graphic missile : missiles) {
+                missile.drawGraphic(canvas);
+            }
         }
     }
 
@@ -194,37 +196,88 @@ public class GameView extends View implements SensorEventListener {
             asteroid.increasePos(movFactor);
         }
 
-        if (activeMissile) {
-            missile.increasePos(movFactor);
-            if (missileTime < 0) {
-                activeMissile = false;
-            } else {
-                for (int i = 0; i < asteroids.size(); i++) {
-                    if (missile.verifyCollision(asteroids.get(i))) {
-                        destroyAsteroid(i);
-                        break;
+        if (!missiles.isEmpty()) {
+            for (int m = 0; m < missiles.size(); m++) {
+                Graphic missile = missiles.get(m);
+                Integer missileTime = missileTimes.get(m);
+
+                missile.increasePos(movFactor);
+                if (missileTime < 0) {
+                    missiles.remove(m);
+                    missileTimes.remove(m);
+                    break;
+                } else {
+                    for (int a = 0; a < asteroids.size(); a++) {
+                        if (missile.verifyCollision(asteroids.get(a))) {
+                            destroyAsteroid(a);
+                            removeMissile(m);
+                            break;
+                        }
                     }
                 }
             }
         }
     }
 
-    private void shootMissile() {
+    private void shootMissile(Context context) {
+        Drawable drawableMissile;
+        SharedPreferences pref = PreferenceManager.
+                getDefaultSharedPreferences(getContext());
+        if (pref.getString("graphics", getResources().getString(R.string.default_graphics)).equals("0")) {
+            drawableMissile = getVectorMissile();
+        } else {
+            drawableMissile = AppCompatResources.getDrawable(context, R.drawable.missile_animation);
+
+            AnimationDrawable animMissile = (AnimationDrawable) drawableMissile;
+            final View me = this;
+            animMissile.setCallback(new Drawable.Callback() {
+                @Override
+                public void unscheduleDrawable(Drawable who, Runnable what) {
+                    me.removeCallbacks(what);
+                }
+
+                @Override
+                public void scheduleDrawable(Drawable who, Runnable what, long when) {
+                    me.postDelayed(what, when - SystemClock.uptimeMillis());
+                }
+
+                @Override
+                public void invalidateDrawable(Drawable who) {
+                    me.postInvalidate();
+                }
+            });
+            animMissile.start();
+        }
+        assert drawableMissile != null;
+        Graphic missile = new Graphic(this, drawableMissile);
+
         missile.setCenX(spaceship.getCenX());
         missile.setCenY(spaceship.getCenY());
         missile.setAngle(spaceship.getAngle());
         missile.setIncX(Math.cos(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
         missile.setIncY(Math.sin(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
-        missileTime = (int) Math.min(this.getWidth() / Math.abs(missile.getIncX()),
+        Integer missileTime = (int) Math.min(this.getWidth() / Math.abs(missile.getIncX()),
                 this.getHeight() / Math.abs(missile.getIncY())) - 2;
-        activeMissile = true;
+        Log.d("GameView", "shootMissile: "+ missileTime);
+
+        missiles.add(missile);
+        missileTimes.add(missileTime);
     }
 
     private void destroyAsteroid(int i) {
         synchronized (asteroids) {
             asteroids.remove(i);
-            activeMissile = false;
             this.postInvalidate();
+        }
+    }
+
+    private void removeMissile(int i) {
+        synchronized (missiles) {
+            missiles.remove(i);
+            synchronized (missileTimes) {
+                missileTimes.remove(i);
+                this.postInvalidate();
+            }
         }
     }
 
@@ -249,7 +302,7 @@ public class GameView extends View implements SensorEventListener {
 
             case KeyEvent.KEYCODE_DPAD_CENTER:
             case KeyEvent.KEYCODE_ENTER:
-                shootMissile();
+                shootMissile(getContext());
                 break;
 
             default:
@@ -316,7 +369,7 @@ public class GameView extends View implements SensorEventListener {
                     processed = false;
                 }
                 if (shooting) {
-                    shootMissile();
+                    shootMissile(getContext());
                 }
                 break;
         }
