@@ -11,6 +11,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -57,6 +59,10 @@ public class GameView extends View implements SensorEventListener {
     private List<Graphic> missiles;
     private static int STEP_MISSILE_SPEED = 12;
     private List<Integer> missileTimes;
+
+    // //// MULTIMEDIA //////
+    SoundPool soundPool;
+    int idDisparo, idExplosion;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -108,6 +114,10 @@ public class GameView extends View implements SensorEventListener {
             mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             registerSensorListener();
         }
+
+        soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+        idDisparo = soundPool.load(context, R.raw.disparo, 0);
+        idExplosion = soundPool.load(context, R.raw.explosion, 0);
     }
 
     @NonNull
@@ -284,11 +294,14 @@ public class GameView extends View implements SensorEventListener {
 
         missiles.add(missile);
         missileTimes.add(missileTime);
+
+        soundPool.play(idDisparo, 1, 1, 1, 0, 1);
     }
 
     private void destroyAsteroid(int i) {
         synchronized (asteroids) {
             asteroids.remove(i);
+            soundPool.play(idExplosion, 1, 1, 0, 0, 1);
             this.postInvalidate();
         }
     }

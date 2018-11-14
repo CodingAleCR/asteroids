@@ -10,7 +10,7 @@ Asteroides
 - [X] Práctica: Aplicando eventos del ciclo de vida en la actividad inicial.
 - [X] Práctica: Aplicando eventos del ciclo de vida en la actividad Juego para desactivar los sensores (importante)
 - [X] Práctica: Guardando el estado en la actividad inicial
-- [ ] Ejercicio: Introduciendo audio con SoundPool en Asteroides.
+- [X] Ejercicio: Introduciendo audio con SoundPool en Asteroides.
 
 _Extras:_
 - [X] Propuesto: Reproducir musica de acuerdo a las preferencias.

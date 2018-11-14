@@ -1,7 +1,7 @@
 package codingalecr.cr.asteroides.views.PreferenceActivity
 
 import android.os.Bundle
-import android.preference.Preference
+import android.preference.Preference.OnPreferenceChangeListener
 import android.preference.PreferenceFragment
 import codingalecr.cr.asteroides.R
 import org.jetbrains.anko.toast
@@ -14,7 +14,7 @@ class PreferencesFragment : PreferenceFragment() {
         val fragmentsPreference = findPreference("fragments")
 
         fragmentsPreference.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _, newValue ->
+                OnPreferenceChangeListener { _, newValue ->
                     val value: Int
                     try {
                         value = newValue.toString().toInt()
