@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <codingalecr.cr.asteroides.views.GameView.GameView
-        android:id="@+id/VistaJuego"
+        android:id="@+id/gameview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"

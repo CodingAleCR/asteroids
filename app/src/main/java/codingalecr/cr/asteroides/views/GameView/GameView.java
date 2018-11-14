@@ -160,11 +160,37 @@ public class GameView extends View implements SensorEventListener {
         }
     }
 
-    class GameThread extends Thread {
+    public class GameThread extends Thread {
+        private boolean paused, running;
+
+        public synchronized void pauseGame() {
+            paused = true;
+        }
+
+        public synchronized void resumeGame() {
+            paused = true;
+            GameThread.this.notify();
+        }
+
+        public void stopGame() {
+            running = false;
+            if (paused) resumeGame();
+        }
+
         @Override
         public void run() {
-            while (true) {
+            running = true;
+            while (running) {
                 updateMovement();
+                synchronized (this) {
+                    while (paused) {
+                        try {
+                            GameView.this.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
     }
@@ -258,7 +284,7 @@ public class GameView extends View implements SensorEventListener {
         missile.setIncY(Math.sin(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
         Integer missileTime = (int) Math.min(this.getWidth() / Math.abs(missile.getIncX()),
                 this.getHeight() / Math.abs(missile.getIncY())) - 2;
-        Log.d("GameView", "shootMissile: "+ missileTime);
+        Log.d("GameView", "shootMissile: " + missileTime);
 
         missiles.add(missile);
         missileTimes.add(missileTime);
@@ -401,5 +427,9 @@ public class GameView extends View implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    public GameThread getThread() {
+        return thread;
     }
 }

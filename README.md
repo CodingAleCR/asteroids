@@ -4,7 +4,7 @@ Asteroids es un popular videojuego de arcade basado en vectores lanzado en 1979 
 Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android.
 
 ### Unidad 6
-- [ ] Ejercicio: Aplicando eventos del ciclo de vida en la actividad Juego de
+- [X] Ejercicio: Aplicando eventos del ciclo de vida en la actividad Juego de
  (importante)
 Asteroides
 - [ ] Práctica: Aplicando eventos del ciclo de vida en la actividad inicial.
@@ -14,7 +14,7 @@ Asteroides
 
 _Extras:_
 - [ ] Otras mejoras propuestas que quieras añadir 
-- [ ] Entrega dentro de plazo
+- [X] Entrega dentro de plazo (Entrega para antes del 17 de noviembre)
 
 ### Unidad 5
 - [X] Ejercicio: Introduciendo movimiento en Asteroides
