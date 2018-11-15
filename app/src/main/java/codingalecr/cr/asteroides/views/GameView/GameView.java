@@ -63,6 +63,7 @@ public class GameView extends View implements SensorEventListener {
     // //// MULTIMEDIA //////
     SoundPool soundPool;
     int idDisparo, idExplosion;
+    private boolean isMusicEnabled;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -80,6 +81,7 @@ public class GameView extends View implements SensorEventListener {
             fragmentQty = getResources().getInteger(R.integer.default_fragments);
         }
         mControlType = pref.getString("controls", getResources().getString(R.string.default_controls));
+        isMusicEnabled = pref.getBoolean("music", getResources().getBoolean(R.bool.default_music));
 
         if (pref.getString("graphics", getResources().getString(R.string.default_graphics)).equals("0")) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -290,18 +292,20 @@ public class GameView extends View implements SensorEventListener {
         missile.setIncY(Math.sin(Math.toRadians(missile.getAngle())) * STEP_MISSILE_SPEED);
         Integer missileTime = (int) Math.min(this.getWidth() / Math.abs(missile.getIncX()),
                 this.getHeight() / Math.abs(missile.getIncY())) - 2;
-        Log.d("GameView", "shootMissile: " + missileTime);
 
         missiles.add(missile);
         missileTimes.add(missileTime);
 
-        soundPool.play(idDisparo, 1, 1, 1, 0, 1);
+        if (isMusicEnabled)
+            soundPool.play(idDisparo, 1, 1, 1, 0, 1);
+
     }
 
     private void destroyAsteroid(int i) {
         synchronized (asteroids) {
             asteroids.remove(i);
-            soundPool.play(idExplosion, 1, 1, 0, 0, 1);
+            if (isMusicEnabled)
+                soundPool.play(idExplosion, 1, 1, 0, 0, 1);
             this.postInvalidate();
         }
     }
