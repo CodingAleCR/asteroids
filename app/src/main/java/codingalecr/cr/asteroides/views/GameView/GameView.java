@@ -236,6 +236,7 @@ public class GameView extends View implements SensorEventListener {
                 Integer missileTime = missileTimes.get(m);
 
                 missile.increasePos(movFactor);
+                missileTimes.set(m, missileTimes.get(m) - (int) movFactor);
                 if (missileTime < 0) {
                     missiles.remove(m);
                     missileTimes.remove(m);
