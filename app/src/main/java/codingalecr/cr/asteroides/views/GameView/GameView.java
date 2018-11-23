@@ -2,10 +2,15 @@ package codingalecr.cr.asteroides.views.GameView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.*;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.VectorDrawable;
+import android.graphics.drawable.shapes.PathShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -18,7 +23,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.content.res.AppCompatResources;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -65,9 +69,11 @@ public class GameView extends View implements SensorEventListener {
     int idDisparo, idExplosion;
     private boolean isMusicEnabled;
 
+    private Drawable drawableAsteroid[] = new Drawable[3];
+
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Drawable drawableSpaceship, drawableAsteroid;
+        Drawable drawableSpaceship;
 
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
@@ -86,11 +92,21 @@ public class GameView extends View implements SensorEventListener {
         if (pref.getString("graphics", getResources().getString(R.string.default_graphics)).equals("0")) {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
             setBackgroundResource(R.drawable.ic_background);
-            drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.ic_large_asteroid);
+            for (int i = 0; i < 3; i++) {
+                ShapeDrawable dAsteroid = new ShapeDrawable(new PathShape(getAsteroidPath(), 1, 1));
+                dAsteroid.getPaint().setColor(Color.parseColor("#6f370f"));
+                dAsteroid.getPaint().setStyle(Paint.Style.FILL_AND_STROKE);
+                dAsteroid.setIntrinsicWidth(50 - i * 14);
+                dAsteroid.setIntrinsicHeight(50 - i * 14);
+                drawableAsteroid[i] = dAsteroid;
+            }
+
             drawableSpaceship = AppCompatResources.getDrawable(context, R.drawable.ic_spaceship);
         } else {
             setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            drawableAsteroid = AppCompatResources.getDrawable(context, R.drawable.asteroide1);
+            drawableAsteroid[0] = AppCompatResources.getDrawable(context, R.drawable.asteroide1);
+            drawableAsteroid[1] = AppCompatResources.getDrawable(context, R.drawable.asteroide2);
+            drawableAsteroid[2] = AppCompatResources.getDrawable(context, R.drawable.asteroide3);
             drawableSpaceship = AppCompatResources.getDrawable(context, R.drawable.nave);
         }
 
@@ -103,7 +119,7 @@ public class GameView extends View implements SensorEventListener {
         asteroids = new ArrayList<>();
         for (int i = 0; i < asteroidsQty; i++) {
             assert drawableAsteroid != null;
-            Graphic asteroid = new Graphic(this, drawableAsteroid);
+            Graphic asteroid = new Graphic(this, drawableAsteroid[0]);
             asteroid.setIncY(Math.random() * 4 - 2);
             asteroid.setIncX(Math.random() * 4 - 2);
             asteroid.setAngle((int) (Math.random() * 360));
@@ -130,6 +146,23 @@ public class GameView extends View implements SensorEventListener {
         dMissile.setIntrinsicWidth(15);
         dMissile.setIntrinsicHeight(3);
         return dMissile;
+    }
+
+    private Path getAsteroidPath() {
+        Path pathAsteroide = new Path();
+        pathAsteroide.moveTo((float) 0.3, (float) 0.0);
+        pathAsteroide.lineTo((float) 0.6, (float) 0.0);
+        pathAsteroide.lineTo((float) 0.6, (float) 0.3);
+        pathAsteroide.lineTo((float) 0.8, (float) 0.2);
+        pathAsteroide.lineTo((float) 1.0, (float) 0.4);
+        pathAsteroide.lineTo((float) 0.8, (float) 0.6);
+        pathAsteroide.lineTo((float) 0.9, (float) 0.9);
+        pathAsteroide.lineTo((float) 0.8, (float) 1.0);
+        pathAsteroide.lineTo((float) 0.4, (float) 1.0);
+        pathAsteroide.lineTo((float) 0.0, (float) 0.6);
+        pathAsteroide.lineTo((float) 0.0, (float) 0.2);
+        pathAsteroide.lineTo((float) 0.3, (float) 0.0);
+        return pathAsteroide;
     }
 
     @Override
@@ -304,6 +337,24 @@ public class GameView extends View implements SensorEventListener {
 
     private void destroyAsteroid(int i) {
         synchronized (asteroids) {
+            int size;
+            if (asteroids.get(i).getDrawable() != drawableAsteroid[2]) {
+                if (asteroids.get(i).getDrawable() == drawableAsteroid[1]) {
+                    size = 2;
+                } else {
+                    size = 1;
+                }
+                for (int n = 0; n < fragmentQty; n++) {
+                    Graphic ast = new Graphic(this, drawableAsteroid[size]);
+                    ast.setCenX(asteroids.get(i).getCenX());
+                    ast.setCenY(asteroids.get(i).getCenY());
+                    ast.setIncX(Math.random() * 7 - 2 - size);
+                    ast.setIncY(Math.random() * 7 - 2 - size);
+                    ast.setAngle((int) (Math.random() * 360));
+                    ast.setRotation((int) (Math.random() * 8 - 4));
+                    asteroids.add(ast);
+                }
+            }
             asteroids.remove(i);
             if (isMusicEnabled)
                 soundPool.play(idExplosion, 1, 1, 0, 0, 1);

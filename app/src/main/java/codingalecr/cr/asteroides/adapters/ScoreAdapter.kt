@@ -28,15 +28,15 @@ class ScoreAdapter(private val scoreList: MutableList<String>) : RecyclerView.Ad
 
         when (position) {
             0 -> {
-                holder.icon.setImageResource(R.drawable.ic_large_asteroid)
+                holder.icon.setImageResource(R.drawable.asteroide1)
             }
 
             1 -> {
-                holder.icon.setImageResource(R.drawable.ic_normal_asteroid)
+                holder.icon.setImageResource(R.drawable.asteroide2)
             }
 
             else -> {
-                holder.icon.setImageResource(R.drawable.ic_small_asteroid)
+                holder.icon.setImageResource(R.drawable.asteroide3)
             }
         }
     }

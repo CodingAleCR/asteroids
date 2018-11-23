@@ -3,6 +3,9 @@ Asteroids es un popular videojuego de arcade basado en vectores lanzado en 1979 
 
 Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android como proyecto educativo.
 
+### Unidad 7
+- [X] Ejercicio: Fragmentando los asteroides
+
 ### Unidad 6
 - [X] Ejercicio: Aplicando eventos del ciclo de vida en la actividad Juego de
  (importante)
