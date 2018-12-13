@@ -3,6 +3,7 @@ package codingalecr.cr.asteroides.views.GameActivity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import codingalecr.cr.asteroides.R
+import codingalecr.cr.asteroides.views.GameView.GameView
 import kotlinx.android.synthetic.main.activity_game.*
 
 class GameActivity : AppCompatActivity() {
@@ -10,6 +11,7 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+        findViewById<GameView>(R.id.gameview).setParent(this)
     }
 
     override fun onResume() {

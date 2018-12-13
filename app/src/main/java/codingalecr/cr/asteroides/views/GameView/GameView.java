@@ -1,6 +1,8 @@
 package codingalecr.cr.asteroides.views.GameView;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,7 +11,6 @@ import android.graphics.Path;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.VectorDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.hardware.Sensor;
@@ -18,6 +19,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -33,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameView extends View implements SensorEventListener {
+    public static final String SCORES_DATA = "scores";
+
     // //// NAVE //////
     private Graphic spaceship; // Gráfico de la spaceship
     private int shipRotation; // Incremento de dirección
@@ -43,7 +47,8 @@ public class GameView extends View implements SensorEventListener {
     private static final float STEP_SHIP_ACCELERATION = 0.5f;
 
     // //// ASTEROIDES //////
-    private List<Graphic> asteroids; // Lista con los Asteroides
+    private final List<Graphic> asteroids; // Lista con los Asteroides
+    private Drawable drawableAsteroid[] = new Drawable[3];
     private int asteroidsQty = 5; // Número inicial de asteroids
     private int fragmentQty; // Fragmentos en que se divide
 
@@ -55,21 +60,25 @@ public class GameView extends View implements SensorEventListener {
     // Cuando se realizó el último proceso
     private long lastUpdate = 0;
 
-    // //// SPACECRAFT CONTROLS //////
+    // //// SPACECRAFT CONTROLS //// //
     private String mControlType;
     private SensorManager mSensorManager;
 
-    // //// MISSILE //////
-    private List<Graphic> missiles;
+    // //// MISSILE //// //
+    private final List<Graphic> missiles;
     private static int STEP_MISSILE_SPEED = 12;
-    private List<Integer> missileTimes;
+    private final List<Integer> missileTimes;
 
-    // //// MULTIMEDIA //////
+    // //// MULTIMEDIA //// //
     SoundPool soundPool;
     int idDisparo, idExplosion;
     private boolean isMusicEnabled;
 
-    private Drawable drawableAsteroid[] = new Drawable[3];
+    // //// SCORES //// //
+    int score = 0;
+
+    // //// Context //// //
+    private Activity parent;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -149,20 +158,20 @@ public class GameView extends View implements SensorEventListener {
     }
 
     private Path getAsteroidPath() {
-        Path pathAsteroide = new Path();
-        pathAsteroide.moveTo((float) 0.3, (float) 0.0);
-        pathAsteroide.lineTo((float) 0.6, (float) 0.0);
-        pathAsteroide.lineTo((float) 0.6, (float) 0.3);
-        pathAsteroide.lineTo((float) 0.8, (float) 0.2);
-        pathAsteroide.lineTo((float) 1.0, (float) 0.4);
-        pathAsteroide.lineTo((float) 0.8, (float) 0.6);
-        pathAsteroide.lineTo((float) 0.9, (float) 0.9);
-        pathAsteroide.lineTo((float) 0.8, (float) 1.0);
-        pathAsteroide.lineTo((float) 0.4, (float) 1.0);
-        pathAsteroide.lineTo((float) 0.0, (float) 0.6);
-        pathAsteroide.lineTo((float) 0.0, (float) 0.2);
-        pathAsteroide.lineTo((float) 0.3, (float) 0.0);
-        return pathAsteroide;
+        Path pathAsteroid = new Path();
+        pathAsteroid.moveTo((float) 0.3, (float) 0.0);
+        pathAsteroid.lineTo((float) 0.6, (float) 0.0);
+        pathAsteroid.lineTo((float) 0.6, (float) 0.3);
+        pathAsteroid.lineTo((float) 0.8, (float) 0.2);
+        pathAsteroid.lineTo((float) 1.0, (float) 0.4);
+        pathAsteroid.lineTo((float) 0.8, (float) 0.6);
+        pathAsteroid.lineTo((float) 0.9, (float) 0.9);
+        pathAsteroid.lineTo((float) 0.8, (float) 1.0);
+        pathAsteroid.lineTo((float) 0.4, (float) 1.0);
+        pathAsteroid.lineTo((float) 0.0, (float) 0.6);
+        pathAsteroid.lineTo((float) 0.0, (float) 0.2);
+        pathAsteroid.lineTo((float) 0.3, (float) 0.0);
+        return pathAsteroid;
     }
 
     @Override
@@ -210,6 +219,7 @@ public class GameView extends View implements SensorEventListener {
         }
 
         public synchronized void resumeGame() {
+            lastUpdate = System.currentTimeMillis();
             paused = false;
             notify();
         }
@@ -285,6 +295,12 @@ public class GameView extends View implements SensorEventListener {
                 }
             }
         }
+
+        for (Graphic asteroid : asteroids) {
+            if (asteroid.verifyCollision(spaceship)) {
+                endgame();
+            }
+        }
     }
 
     private void shootMissile(Context context) {
@@ -298,23 +314,25 @@ public class GameView extends View implements SensorEventListener {
 
             AnimationDrawable animMissile = (AnimationDrawable) drawableMissile;
             final View me = this;
-            animMissile.setCallback(new Drawable.Callback() {
-                @Override
-                public void unscheduleDrawable(Drawable who, Runnable what) {
-                    me.removeCallbacks(what);
-                }
+            if (animMissile != null) {
+                animMissile.setCallback(new Drawable.Callback() {
+                    @Override
+                    public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
+                        me.removeCallbacks(what);
+                    }
 
-                @Override
-                public void scheduleDrawable(Drawable who, Runnable what, long when) {
-                    me.postDelayed(what, when - SystemClock.uptimeMillis());
-                }
+                    @Override
+                    public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
+                        me.postDelayed(what, when - SystemClock.uptimeMillis());
+                    }
 
-                @Override
-                public void invalidateDrawable(Drawable who) {
-                    me.postInvalidate();
-                }
-            });
-            animMissile.start();
+                    @Override
+                    public void invalidateDrawable(@NonNull Drawable who) {
+                        me.postInvalidate();
+                    }
+                });
+                animMissile.start();
+            }
         }
         assert drawableMissile != null;
         Graphic missile = new Graphic(this, drawableMissile);
@@ -337,6 +355,7 @@ public class GameView extends View implements SensorEventListener {
 
     private void destroyAsteroid(int i) {
         synchronized (asteroids) {
+            score += 1000;
             int size;
             if (asteroids.get(i).getDrawable() != drawableAsteroid[2]) {
                 if (asteroids.get(i).getDrawable() == drawableAsteroid[1]) {
@@ -359,6 +378,10 @@ public class GameView extends View implements SensorEventListener {
             if (isMusicEnabled)
                 soundPool.play(idExplosion, 1, 1, 0, 0, 1);
             this.postInvalidate();
+
+            if (asteroids.isEmpty()) {
+                endgame();
+            }
         }
     }
 
@@ -512,5 +535,19 @@ public class GameView extends View implements SensorEventListener {
         if (mControlType.equals("sensors")) {
             mSensorManager.unregisterListener(this);
         }
+    }
+
+    public void setParent(Activity parent) {
+        this.parent = parent;
+    }
+
+    private void endgame() {
+        Bundle bundle = new Bundle();
+        bundle.putInt(SCORES_DATA, score);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+
+        parent.setResult(Activity.RESULT_OK, intent);
+        parent.finish();
     }
 }

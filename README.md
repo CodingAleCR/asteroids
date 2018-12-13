@@ -3,6 +3,49 @@ Asteroids es un popular videojuego de arcade basado en vectores lanzado en 1979 
 
 Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android como proyecto educativo.
 
+### Unidad 10
+- [ ] Ejercicio: Almacenando las puntuaciones mediante un protocolo basado en sockets. (NOTA: La IP del servidor ha de ser:"158.42.146.127:1234")
+- [ ] Ejercicio: Uso del servicio web PHP en Asteroides(Accediendo a http://158.42.146.127/puntuaciones/)
+- [ ] Ejercicio: Un servicio web en un servidor de hosting (Tienes que añadir en la explicación de la tarea las dos URL con las acciones de
+tu servicio Web. Comprueba que al abrir estas URLs el servidor contesta correctamente.
+- [ ] Ejercicio: Añade la posibilidad de usar tu hosting como una nueva opción de preferencias. Igual que ejercicio Uso del servicio web PHP en Asteroides pero ahora accediendo a http://tu_URL/puntuaciones/)
+_Extras:_
+- [ ] Ejercicio: Uso síncrono de AsyncTask para acceso al servicio web PHP de puntuaciones.
+- [ ] Desafío: Acceso al servidor de sockets con AsyncTask. Hay que eliminar 
+configuración de StrictMode y usar los sockets en un nuevo hilo.
+- [ ] Ejercicio: Cargar imágenes de un RecyclerView con NetworkImageView
+- [ ] Desafío: Convertidor de divisas mediante un servicio web.
+El servidor propuesto en el libro no funciona. (Se entrega en el mismo proyecto. Añade un nuevo botón en la actividad principal de Asteroides)
+
+
+### Unidad 9
+- [X] Ejercicio: Calculando la puntuación en Asteroides (obligatorio)
+- [ ] Práctica: Almacenando las 10 últimas puntuaciones en preferencias
+- [ ] Ejercicio: Almacenando puntuaciones en un fichero de la memoria interna.
+- [ ] Practica: Configurar almacenamiento de puntuaciones desde preferencias (obligatorio)
+- [ ] Ejercicio: Almacenando puntuaciones en la memoria externa
+- [ ] Practica: Verificando acceso a la memoria externa
+- [ ] Ejercicio: Leyendo puntuaciones de un fichero de recursos en res/raw
+- [ ] Ejercicio: Leyendo puntuaciones de un fichero de recursos en assets
+- [ ] Ejercicio: Almacenando puntuaciones en XML con SAX
+- [ ] Ejercicio: Guardar una clase en JSON con la librería Gson
+- [ ] Ejercicio: Guardar puntuaciones en JSON con la librería org.json
+- [ ] Ejercicio: Utilizando una base de datos para guardar puntuaciones
+- [ ] Ejercicio: Utilización del método query() para guardar puntuaciones.
+
+_Extras:_
+- [ ] Práctica: Almacenando puntuaciones en una carpeta de la aplicación de la memoria externa
+- [ ] Ejercicio: Almacenando puntuaciones en XML con DOM
+- [ ] Práctica: Guardar el string JSON en un fichero
+- [ ] Ejercicio: Una base de datos relacional para las puntuaciones
+- [ ] Ejercicio: Utilizando el método onUpgrade de la clase SQLiteOpenHelper
+- [ ] Ejercicio: Creación de un ContentProvider
+- [ ] Ejercicio: Acceso a PuntuacionesProvider desde Asteroides
+- [ ] Desafío: Permitir seleccionar diferentes almacenamientos externos
+
+### Unidad 
+- [X] No existen ejercicios.
+
 ### Unidad 7
 - [X] Ejercicio: Fragmentando los asteroides
 
