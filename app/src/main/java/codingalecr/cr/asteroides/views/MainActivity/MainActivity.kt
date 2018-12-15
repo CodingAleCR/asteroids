@@ -190,6 +190,10 @@ class MainActivity : AppCompatActivity() {
             "database" -> {
                 scoreManager = DatabaseScoreManager(this)
             }
+
+            "relational" -> {
+                scoreManager = RelDatabaseScoreManager(this)
+            }
         }
     }
 

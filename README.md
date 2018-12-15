@@ -37,8 +37,8 @@ _Extras:_
 - [ ] Práctica: Almacenando puntuaciones en una carpeta de la aplicación de la memoria externa
 - [ ] Ejercicio: Almacenando puntuaciones en XML con DOM
 - [ ] Práctica: Guardar el string JSON en un fichero
-- [ ] Ejercicio: Una base de datos relacional para las puntuaciones
-- [ ] Ejercicio: Utilizando el método onUpgrade de la clase SQLiteOpenHelper
+- [X] Ejercicio: Una base de datos relacional para las puntuaciones
+- [X] Ejercicio: Utilizando el método onUpgrade de la clase SQLiteOpenHelper
 - [ ] Ejercicio: Creación de un ContentProvider
 - [ ] Ejercicio: Acceso a PuntuacionesProvider desde Asteroides
 - [ ] Desafío: Permitir seleccionar diferentes almacenamientos externos
