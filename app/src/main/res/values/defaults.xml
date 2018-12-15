@@ -4,4 +4,5 @@
     <string name="default_graphics">0</string>
     <string name="default_controls">touchscreen</string>
     <bool name="default_music">true</bool>
+    <string name="default_name">Player</string>
 </resources>

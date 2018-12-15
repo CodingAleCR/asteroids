@@ -20,6 +20,8 @@
     <string name="text_control_types">Escoge como prefieres manejar la nave.</string>
     <string name="label_fragments_number">Número de Fragmentos</string>
     <string name="text_fragment_number">En cuantos trozos se divide un asteroide</string>
+    <string name="label_name">Nombre del jugador</string>
+    <string name="text_name">Escribe tu nombre o nickname a mostrar en puntuaciones.</string>
     <string name="label_multiplayer_mode">Modo Multijugador</string>
     <string name="label_max_players">Máximo de jugadores</string>
     <string name="label_multiplayer_on">Activar Modo Multijugador</string>

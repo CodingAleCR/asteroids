@@ -65,6 +65,12 @@ class MainActivity : AppCompatActivity() {
         return pref.getBoolean("music", resources.getBoolean(R.bool.default_music))
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getPlayerName(): String {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        return pref.getString("player", resources.getString(R.string.default_name))
+    }
+
     override fun onStart() {
         super.onStart()
         if (isMusicEnabled())
@@ -117,7 +123,8 @@ class MainActivity : AppCompatActivity() {
             && data != null
         ) {
             val score = data.extras?.get(GameView.SCORES_DATA) as Int
-            val name = "Player"
+            val name = getPlayerName()
+
             scoreManager.storeScore(score, name, System.currentTimeMillis())
             launchScoreList()
         }

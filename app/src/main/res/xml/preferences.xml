@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="main_preferences">
+    <EditTextPreference
+        android:defaultValue="@string/default_name"
+        android:inputType="text"
+        android:key="player"
+        android:summary="@string/text_name"
+        android:title="@string/label_name" />
     <CheckBoxPreference
         android:defaultValue="@bool/default_music"
         android:key="music"
         android:summary="Se reproduce música de fondo"
         android:title="Reproducir música" />
     <ListPreference
-    android:defaultValue="@string/default_graphics"
-    android:entries="@array/graphicTypes"
-    android:entryValues="@array/graphicTypesValues"
-    android:key="graphics"
-    android:summary="@string/text_graphic_types"
-    android:title="@string/label_graphic_types" />
+        android:defaultValue="@string/default_graphics"
+        android:entries="@array/graphicTypes"
+        android:entryValues="@array/graphicTypesValues"
+        android:key="graphics"
+        android:summary="@string/text_graphic_types"
+        android:title="@string/label_graphic_types" />
     <ListPreference
         android:defaultValue="@string/default_controls"
         android:entries="@array/controlTypes"
