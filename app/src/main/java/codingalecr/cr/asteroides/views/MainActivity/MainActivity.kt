@@ -9,9 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import codingalecr.cr.asteroides.R
-import codingalecr.cr.asteroides.utils.ScoreListManager
-import codingalecr.cr.asteroides.utils.ScorePreferenceManager
-import codingalecr.cr.asteroides.utils.ScoreStorage
+import codingalecr.cr.asteroides.utils.*
 import codingalecr.cr.asteroides.views.AboutActivity.AboutActivity
 import codingalecr.cr.asteroides.views.GameActivity.GameActivity
 import codingalecr.cr.asteroides.views.GameView.GameView
@@ -25,7 +23,7 @@ import org.jetbrains.anko.startActivityForResult
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var scoreManager: ScoreStorage = ScoreListManager(
+        var scoreManager: ScoreStorage = ListScoreManager(
             mutableListOf(
                 "123000 - Pepito Domingez",
                 "111000 - Pedro Martinez",
@@ -33,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             )
         )
         const val GAME_ACTIVITY = 0
+        const val PREFERENCE_ACTIVITY = 1
     }
 
     private lateinit var mediaPlayer: MediaPlayer
@@ -51,8 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer.create(this, R.raw.audio)
 
-        scoreManager = ScorePreferenceManager(this)
-
+        refreshStorage()
         //Start animations
 //        val rotationWithZoom = AnimationUtils.loadAnimation(this, R.anim.rotation_with_zoom)
 //        tv_game_title.startAnimation(rotationWithZoom)
@@ -122,15 +120,68 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GAME_ACTIVITY
-            && resultCode == Activity.RESULT_OK
-            && data != null
-        ) {
-            val score = data.extras?.get(GameView.SCORES_DATA) as Int
-            val name = getPlayerName()
+        when (requestCode) {
+            GAME_ACTIVITY -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.let {
+                        val score = data.extras?.get(GameView.SCORES_DATA) as Int
+                        val name = getPlayerName()
 
-            scoreManager.storeScore(score, name, System.currentTimeMillis())
-            launchScoreList()
+                        scoreManager.storeScore(score, name, System.currentTimeMillis())
+                        launchScoreList()
+                    }
+                }
+            }
+
+            PREFERENCE_ACTIVITY -> {
+                //Do Score Manager refresh
+                refreshStorage()
+            }
+        }
+    }
+
+    private fun refreshStorage() {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val storageType = pref.getString("storage", resources.getString(R.string.default_name))
+
+        when (storageType) {
+            "array" -> {
+                scoreManager = ListScoreManager(
+                    mutableListOf(
+                        "123000 - Pepito Domingez",
+                        "111000 - Pedro Martinez",
+                        "011000 - Paco Pérez"
+                    )
+                )
+            }
+
+            "preferences" -> {
+                scoreManager = PreferenceScoreManager(this)
+            }
+
+            "internal" -> {
+                scoreManager = IntStorageScoreManager(this)
+            }
+
+            "external" -> {
+                scoreManager = ExtStorageScoreManager(this)
+            }
+
+            "raw" -> {
+                scoreManager = RawStorageScoreManager(this)
+            }
+
+            "assets" -> {
+                scoreManager = AssetsStorageScoreManager(this)
+            }
+
+            "xml" -> {
+                scoreManager = XMLStorageScoreManager(this)
+            }
+
+            "gson" -> {
+                scoreManager = GsonStorageScoreManager(this)
+            }
         }
     }
 
@@ -139,7 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchPreferences() {
-        startActivity<PreferencesActivity>()
+        startActivityForResult<PreferencesActivity>(PREFERENCE_ACTIVITY)
     }
 
     private fun launchAboutActivity() {

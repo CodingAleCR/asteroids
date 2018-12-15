@@ -28,4 +28,24 @@
         <item>touchscreen</item>
         <item>sensors</item>
     </string-array>
+    <string-array name="storageTypes">
+        <item>Array</item>
+        <item>Preferencias</item>
+        <item>Fichero en memoria interna</item>
+        <item>Fichero en memoria externa</item>
+        <item>Fichero en Raw</item>
+        <item>Fichero en Assets</item>
+        <item>Fichero en XML-Sax</item>
+        <item>Clase con GSON</item>
+    </string-array>
+    <string-array name="storageTypesValues">
+        <item>array</item>
+        <item>preferences</item>
+        <item>internal</item>
+        <item>external</item>
+        <item>raw</item>
+        <item>assets</item>
+        <item>xml</item>
+        <item>gson</item>
+    </string-array>
 </resources>

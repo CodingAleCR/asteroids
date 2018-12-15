@@ -1,6 +1,6 @@
 package codingalecr.cr.asteroides.utils
 
-class ScoreListManager(list: MutableList<String>) : ScoreStorage {
+class ListScoreManager(list: MutableList<String>) : ScoreStorage {
     private var scores = list
 
     override fun storeScore(points: Int, name: String, date: Long) {

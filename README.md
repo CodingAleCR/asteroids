@@ -21,13 +21,13 @@ El servidor propuesto en el libro no funciona. (Se entrega en el mismo proyecto.
 ### Unidad 9
 - [X] Ejercicio: Calculando la puntuación en Asteroides (obligatorio)
 - [X] Práctica: Almacenando las 10 últimas puntuaciones en preferencias
-- [ ] Ejercicio: Almacenando puntuaciones en un fichero de la memoria interna.
-- [ ] Practica: Configurar almacenamiento de puntuaciones desde preferencias (obligatorio)
-- [ ] Ejercicio: Almacenando puntuaciones en la memoria externa
-- [ ] Practica: Verificando acceso a la memoria externa
-- [ ] Ejercicio: Leyendo puntuaciones de un fichero de recursos en res/raw
-- [ ] Ejercicio: Leyendo puntuaciones de un fichero de recursos en assets
-- [ ] Ejercicio: Almacenando puntuaciones en XML con SAX
+- [X] Ejercicio: Almacenando puntuaciones en un fichero de la memoria interna.
+- [X] Practica: Configurar almacenamiento de puntuaciones desde preferencias (obligatorio)
+- [X] Ejercicio: Almacenando puntuaciones en la memoria externa
+- [X] Practica: Verificando acceso a la memoria externa
+- [X] Ejercicio: Leyendo puntuaciones de un fichero de recursos en res/raw
+- [X] Ejercicio: Leyendo puntuaciones de un fichero de recursos en assets
+- [X] Ejercicio: Almacenando puntuaciones en XML con SAX
 - [ ] Ejercicio: Guardar una clase en JSON con la librería Gson
 - [ ] Ejercicio: Guardar puntuaciones en JSON con la librería org.json
 - [ ] Ejercicio: Utilizando una base de datos para guardar puntuaciones
@@ -130,4 +130,4 @@ _Extras:_
 * [x] Reiniciar operación al clickar "=" o "Pts".
 * [x] Habilitar función de "+" después de clickar "=" o "Pts".
 
-#### _Hecho con **Kotlin**_
+#### _Hecho con **Kotlin** :two_hearts:_

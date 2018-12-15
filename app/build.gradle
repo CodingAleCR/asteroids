@@ -34,4 +34,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // Anko Commons
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation 'com.google.code.gson:gson:2.8.5'
 }

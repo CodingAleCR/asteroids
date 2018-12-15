@@ -7,6 +7,12 @@
         android:key="player"
         android:summary="@string/text_name"
         android:title="@string/label_name" />
+    <EditTextPreference
+        android:defaultValue="@integer/default_fragments"
+        android:inputType="number"
+        android:key="fragments"
+        android:summary="@string/text_fragment_number"
+        android:title="@string/label_fragments_number" />
     <CheckBoxPreference
         android:defaultValue="@bool/default_music"
         android:key="music"
@@ -26,11 +32,12 @@
         android:key="controls"
         android:summary="@string/text_control_types"
         android:title="@string/label_control_types" />
-    <EditTextPreference
-        android:defaultValue="@integer/default_fragments"
-        android:inputType="number"
-        android:key="fragments"
-        android:summary="@string/text_fragment_number"
-        android:title="@string/label_fragments_number" />
+    <ListPreference
+        android:defaultValue="@string/default_storage"
+        android:entries="@array/storageTypes"
+        android:entryValues="@array/storageTypesValues"
+        android:key="storage"
+        android:summary="@string/text_storage"
+        android:title="@string/label_storage" />
 
 </PreferenceScreen>

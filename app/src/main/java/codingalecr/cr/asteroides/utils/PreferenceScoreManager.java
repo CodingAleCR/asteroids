@@ -7,12 +7,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScorePreferenceManager implements ScoreStorage {
+public class PreferenceScoreManager implements ScoreStorage {
 
     private static String PREFERENCES = "scores";
     private Context mContext;
 
-    public ScorePreferenceManager(Context mContext) {
+    public PreferenceScoreManager(Context mContext) {
         this.mContext = mContext;
     }
 
