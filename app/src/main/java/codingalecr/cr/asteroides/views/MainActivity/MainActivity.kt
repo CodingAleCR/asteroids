@@ -10,6 +10,8 @@ import android.view.Menu
 import android.view.MenuItem
 import codingalecr.cr.asteroides.R
 import codingalecr.cr.asteroides.utils.ScoreListManager
+import codingalecr.cr.asteroides.utils.ScorePreferenceManager
+import codingalecr.cr.asteroides.utils.ScoreStorage
 import codingalecr.cr.asteroides.views.AboutActivity.AboutActivity
 import codingalecr.cr.asteroides.views.GameActivity.GameActivity
 import codingalecr.cr.asteroides.views.GameView.GameView
@@ -23,7 +25,7 @@ import org.jetbrains.anko.startActivityForResult
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        val scoreManager: ScoreListManager = ScoreListManager(
+        var scoreManager: ScoreStorage = ScoreListManager(
             mutableListOf(
                 "123000 - Pepito Domingez",
                 "111000 - Pedro Martinez",
@@ -47,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         //Hide the ActionBar title.
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.audio)
+
+        scoreManager = ScorePreferenceManager(this)
+
         //Start animations
 //        val rotationWithZoom = AnimationUtils.loadAnimation(this, R.anim.rotation_with_zoom)
 //        tv_game_title.startAnimation(rotationWithZoom)
@@ -56,8 +62,6 @@ class MainActivity : AppCompatActivity() {
 //        btn_settings.startAnimation(fadeIn)
 //        btn_about.startAnimation(fadeIn)
 //        btn_scores.startAnimation(fadeIn)
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.audio)
     }
 
     private fun isMusicEnabled(): Boolean {

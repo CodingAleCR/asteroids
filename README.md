@@ -20,7 +20,7 @@ El servidor propuesto en el libro no funciona. (Se entrega en el mismo proyecto.
 
 ### Unidad 9
 - [X] Ejercicio: Calculando la puntuación en Asteroides (obligatorio)
-- [ ] Práctica: Almacenando las 10 últimas puntuaciones en preferencias
+- [X] Práctica: Almacenando las 10 últimas puntuaciones en preferencias
 - [ ] Ejercicio: Almacenando puntuaciones en un fichero de la memoria interna.
 - [ ] Practica: Configurar almacenamiento de puntuaciones desde preferencias (obligatorio)
 - [ ] Ejercicio: Almacenando puntuaciones en la memoria externa

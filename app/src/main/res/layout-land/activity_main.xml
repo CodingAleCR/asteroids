@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/button_margin"
-    tools:context=".views.MainActivity.MainActivity">
+    tools:mContext=".views.MainActivity.MainActivity">
 
     <TextView
         android:id="@+id/tv_game_title"

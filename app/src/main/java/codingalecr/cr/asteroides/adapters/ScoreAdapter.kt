@@ -9,7 +9,7 @@ import android.widget.TextView
 import codingalecr.cr.asteroides.R
 import kotlinx.android.synthetic.main.item_score.view.*
 
-class ScoreAdapter(private val scoreList: MutableList<String>) : RecyclerView.Adapter<ScoreAdapter.ScoreViewholder>() {
+class ScoreAdapter(private val scoreList: List<String>) : RecyclerView.Adapter<ScoreAdapter.ScoreViewholder>() {
 
     var onClickListener: View.OnClickListener? = null
 
