@@ -21,30 +21,30 @@ import java.util.List;
 
 public class XMLStorageScoreManager implements ScoreStorage {
 
-    private static String FICHERO = "puntuaciones.xml";
-    private Context contexto;
-    private ListaPuntuaciones lista;
-    private boolean cargadaLista;
+    private static String FILE = "puntuaciones.xml";
+    private Context mContext;
+    private ListaPuntuaciones mList;
+    private boolean isListLoaded;
 
-    public XMLStorageScoreManager(Context contexto) {
-        this.contexto = contexto;
-        lista = new ListaPuntuaciones();
-        cargadaLista = false;
+    public XMLStorageScoreManager(Context mContext) {
+        this.mContext = mContext;
+        mList = new ListaPuntuaciones();
+        isListLoaded = false;
     }
 
     @Override
     public void storeScore(int points, @NotNull String name, long date) {
         try {
-            if (!cargadaLista) {
-                lista.leerXML(contexto.openFileInput(FICHERO));
+            if (!isListLoaded) {
+                mList.leerXML(mContext.openFileInput(FILE));
             }
         } catch (FileNotFoundException ignored) {
         } catch (Exception e) {
             Log.e("Asteroides", e.getMessage(), e);
         }
-        lista.nuevo(points, name, date);
+        mList.nuevo(points, name, date);
         try {
-            lista.escribirXML(contexto.openFileOutput(FICHERO, Context.MODE_PRIVATE));
+            mList.escribirXML(mContext.openFileOutput(FILE, Context.MODE_PRIVATE));
         } catch (Exception e) {
             Log.e("Asteroides", e.getMessage(), e);
         }
@@ -54,13 +54,13 @@ public class XMLStorageScoreManager implements ScoreStorage {
     @Override
     public List<String> scoresList(int quantity) {
         try {
-            if (!cargadaLista) {
-                lista.leerXML(contexto.openFileInput(FICHERO));
+            if (!isListLoaded) {
+                mList.leerXML(mContext.openFileInput(FILE));
             }
         } catch (Exception e) {
             Log.e("Asteroides", e.getMessage(), e);
         }
-        return lista.aListString();
+        return mList.aListString();
     }
 
     private class ListaPuntuaciones {
@@ -99,7 +99,7 @@ public class XMLStorageScoreManager implements ScoreStorage {
             ManejadorXML manejadorXML = new ManejadorXML();
             lector.setContentHandler(manejadorXML);
             lector.parse(new InputSource(entrada));
-            cargadaLista = true;
+            isListLoaded = true;
         }
 
         public void escribirXML(OutputStream salida) {

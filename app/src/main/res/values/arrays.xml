@@ -37,6 +37,8 @@
         <item>Fichero en Assets</item>
         <item>Fichero en XML-Sax</item>
         <item>Clase con GSON</item>
+        <item>Clase con JSON Object</item>
+        <item>Base de Datos SQLite</item>
     </string-array>
     <string-array name="storageTypesValues">
         <item>array</item>
@@ -47,5 +49,7 @@
         <item>assets</item>
         <item>xml</item>
         <item>gson</item>
+        <item>json</item>
+        <item>database</item>
     </string-array>
 </resources>

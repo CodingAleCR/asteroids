@@ -182,6 +182,14 @@ class MainActivity : AppCompatActivity() {
             "gson" -> {
                 scoreManager = GsonStorageScoreManager(this)
             }
+
+            "json" -> {
+                scoreManager = JsonStorageScoreManager(this)
+            }
+
+            "database" -> {
+                scoreManager = DatabaseScoreManager(this)
+            }
         }
     }
 

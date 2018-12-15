@@ -29,9 +29,9 @@ El servidor propuesto en el libro no funciona. (Se entrega en el mismo proyecto.
 - [X] Ejercicio: Leyendo puntuaciones de un fichero de recursos en assets
 - [X] Ejercicio: Almacenando puntuaciones en XML con SAX
 - [X] Ejercicio: Guardar una clase en JSON con la librería Gson
-- [ ] Ejercicio: Guardar puntuaciones en JSON con la librería org.json
-- [ ] Ejercicio: Utilizando una base de datos para guardar puntuaciones
-- [ ] Ejercicio: Utilización del método query() para guardar puntuaciones.
+- [X] Ejercicio: Guardar puntuaciones en JSON con la librería org.json
+- [X] Ejercicio: Utilizando una base de datos para guardar puntuaciones
+- [X] Ejercicio: Utilización del método query() para guardar puntuaciones.
 
 _Extras:_
 - [ ] Práctica: Almacenando puntuaciones en una carpeta de la aplicación de la memoria externa
