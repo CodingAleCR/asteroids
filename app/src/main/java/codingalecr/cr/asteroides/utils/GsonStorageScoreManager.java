@@ -1,16 +1,12 @@
 package codingalecr.cr.asteroides.utils;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
 import codingalecr.cr.asteroides.models.Puntuacion;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +26,6 @@ public class GsonStorageScoreManager implements ScoreStorage {
 
     public GsonStorageScoreManager(Context context) {
         mContext = context;
-        storeScore(45000, "Mi nombre", System.currentTimeMillis());
-        storeScore(31000, "Otro nombre", System.currentTimeMillis());
     }
 
     @Override
@@ -49,38 +43,22 @@ public class GsonStorageScoreManager implements ScoreStorage {
     }
 
     private void guardarString(String string) {
-        try {
-            FileOutputStream f = mContext.openFileOutput(FILE, Context.MODE_APPEND);
-            f.write(string.getBytes());
-            f.close();
-        } catch (Exception e) {
-            Log.e("Asteroides", e.getMessage(), e);
-        }
+        SharedPreferences preferences = mContext.getSharedPreferences(FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("json", string);
+        editor.apply();
     }
 
     private String leerString() {
-        String json = "";
-        try {
-            FileInputStream f = mContext.openFileInput(FILE);
-            BufferedReader input = new BufferedReader(new InputStreamReader(f));
-            String line;
-            do {
-                line = input.readLine();
-                if (line != null) {
-                    json = line;
-                }
-            } while (line != null);
-            f.close();
-        } catch (Exception e) {
-            Log.e("Asteroides", e.getMessage(), e);
-        }
-        return json;
+        SharedPreferences preferences = mContext.getSharedPreferences(
+                FILE, Context.MODE_PRIVATE);
+        return preferences.getString("json", null);
     }
 
     @NotNull
     @Override
     public List<String> scoresList(int quantity) {
-        //string = leerString();
+        string = leerString();
         Clase objeto;
         if (string == null) {
             objeto = new Clase();
