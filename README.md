@@ -5,10 +5,11 @@ Ahora la intención es replicar este videojuego, adaptándolo a la plataforma An
 
 ### Unidad 10
 - [X] Ejercicio: Almacenando las puntuaciones mediante un protocolo basado en sockets. (NOTA: La IP del servidor ha de ser:"158.42.146.127:1234")
-- [ ] Ejercicio: Uso del servicio web PHP en Asteroides(Accediendo a http://158.42.146.127/puntuaciones/)
-- [ ] Ejercicio: Un servicio web en un servidor de hosting (Tienes que añadir en la explicación de la tarea las dos URL con las acciones de
+- [X] Ejercicio: Uso del servicio web PHP en Asteroides(Accediendo a http://158.42.146.127/puntuaciones/)
+- [X] Ejercicio: Un servicio web en un servidor de hosting (Tienes que añadir en la explicación de la tarea las dos URL con las acciones de
 tu servicio Web. Comprueba que al abrir estas URLs el servidor contesta correctamente.
-- [ ] Ejercicio: Añade la posibilidad de usar tu hosting como una nueva opción de preferencias. Igual que ejercicio Uso del servicio web PHP en Asteroides pero ahora accediendo a http://tu_URL/puntuaciones/)
+- [X] Ejercicio: Añade la posibilidad de usar tu hosting como una nueva opción de preferencias. Igual que ejercicio Uso del servicio web PHP en Asteroides pero ahora accediendo a http://tu_URL/puntuaciones/)
+
 _Extras:_
 - [ ] Ejercicio: Uso síncrono de AsyncTask para acceso al servicio web PHP de puntuaciones.
 - [ ] Desafío: Acceso al servidor de sockets con AsyncTask. Hay que eliminar 
@@ -17,6 +18,9 @@ configuración de StrictMode y usar los sockets en un nuevo hilo.
 - [ ] Desafío: Convertidor de divisas mediante un servicio web.
 El servidor propuesto en el libro no funciona. (Se entrega en el mismo proyecto. Añade un nuevo botón en la actividad principal de Asteroides)
 
+#### Servidor propio.
+- Lista de puntuaciones: http://asteroides-crc.herokuapp.com/puntuaciones/lista.php
+- Nueva puntuacion: http://asteroides-crc.herokuapp.com/puntuaciones/nueva.php
 
 ### Unidad 9
 - [X] Ejercicio: Calculando la puntuación en Asteroides (obligatorio)

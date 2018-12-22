@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/asteroide2" />
+        tools:src="@drawable/asteroide2"/>
 
     <TextView
         android:id="@+id/titulo"

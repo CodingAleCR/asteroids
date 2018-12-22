@@ -33,4 +33,5 @@
     <string name="text_external_storage_read_not_available">No puedo leer en la memoria externa.</string>
     <string name="text_external_storage_write_not_available">No puedo escribir en la memoria externa.</string>
     <string name="text_server_not_available">El servidor no responde.</string>
+    <string name="btn_currency">Convertidor de divisas</string>
 </resources>

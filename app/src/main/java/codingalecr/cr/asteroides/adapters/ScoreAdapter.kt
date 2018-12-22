@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import codingalecr.cr.asteroides.R
+import codingalecr.cr.asteroides.views.MainActivity.MainActivity
+import com.android.volley.toolbox.NetworkImageView
 import kotlinx.android.synthetic.main.item_score.view.*
 
 class ScoreAdapter(private val scoreList: List<String>) : RecyclerView.Adapter<ScoreAdapter.ScoreViewholder>() {
@@ -39,11 +41,14 @@ class ScoreAdapter(private val scoreList: List<String>) : RecyclerView.Adapter<S
                 holder.icon.setImageResource(R.drawable.asteroide3)
             }
         }
+
+//        holder.icon.setImageUrl("http://mmoviles.upv.es/img/moviles.png", MainActivity.imageLoader)
     }
 
     class ScoreViewholder(itemview: View) : RecyclerView.ViewHolder(itemview) {
         val title: TextView = itemview.titulo
         val subtitle: TextView = itemview.subtitulo
         val icon: ImageView = itemview.icono
+//        val icon: NetworkImageView = itemview.icono
     }
 }

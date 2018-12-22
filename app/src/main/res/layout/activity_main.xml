@@ -1,49 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/button_margin"
-    tools:mContext=".views.MainActivity.MainActivity">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/Base.TextAppearance.AppCompat.Display3"
-        android:id="@+id/tv_game_title"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/righteous"
         android:gravity="center"
-        android:text="@string/app_name"
-        android:textColor="@color/colorAccent" />
+        android:orientation="vertical"
+        android:padding="@dimen/button_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:mContext=".views.MainActivity.MainActivity">
+
+        <TextView
+            android:id="@+id/tv_game_title"
+            style="@style/Base.TextAppearance.AppCompat.Display3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/righteous"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/btn_play"
+            style="@style/Widget.Asteroids.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/righteous"
+            android:text="@string/btn_play" />
+
+        <Button
+            android:id="@+id/btn_settings"
+            style="@style/Widget.Asteroids.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_settings" />
+
+        <Button
+            android:id="@+id/btn_about"
+            style="@style/Widget.Asteroids.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_about" />
+
+        <Button
+            android:id="@+id/btn_scores"
+            style="@style/Widget.Asteroids.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_scores" />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btn_play"
-        style="@style/Widget.Asteroids.OutlinedButton"
-        android:layout_width="match_parent"
+        android:id="@+id/btn_currency"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:fontFamily="@font/righteous"
-        android:text="@string/btn_play" />
-
-    <Button
-        android:id="@+id/btn_settings"
-        style="@style/Widget.Asteroids.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_settings" />
-
-    <Button
-        android:id="@+id/btn_about"
-        style="@style/Widget.Asteroids.OutlinedButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_about" />
-
-    <Button
-        android:id="@+id/btn_scores"
-        style="@style/Widget.Asteroids.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_scores" />
-</LinearLayout>
+        android:text="@string/btn_currency"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+</android.support.constraint.ConstraintLayout>
