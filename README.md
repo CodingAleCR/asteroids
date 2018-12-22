@@ -4,7 +4,7 @@ Asteroids es un popular videojuego de arcade basado en vectores lanzado en 1979 
 Ahora la intención es replicar este videojuego, adaptándolo a la plataforma Android como proyecto educativo.
 
 ### Unidad 10
-- [ ] Ejercicio: Almacenando las puntuaciones mediante un protocolo basado en sockets. (NOTA: La IP del servidor ha de ser:"158.42.146.127:1234")
+- [X] Ejercicio: Almacenando las puntuaciones mediante un protocolo basado en sockets. (NOTA: La IP del servidor ha de ser:"158.42.146.127:1234")
 - [ ] Ejercicio: Uso del servicio web PHP en Asteroides(Accediendo a http://158.42.146.127/puntuaciones/)
 - [ ] Ejercicio: Un servicio web en un servidor de hosting (Tienes que añadir en la explicación de la tarea las dos URL con las acciones de
 tu servicio Web. Comprueba que al abrir estas URLs el servidor contesta correctamente.

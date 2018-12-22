@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import codingalecr.cr.asteroides.R
-import codingalecr.cr.asteroides.utils.*
+import codingalecr.cr.asteroides.storage.*
 import codingalecr.cr.asteroides.views.AboutActivity.AboutActivity
 import codingalecr.cr.asteroides.views.GameActivity.GameActivity
 import codingalecr.cr.asteroides.views.GameView.GameView
@@ -23,13 +23,14 @@ import org.jetbrains.anko.startActivityForResult
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var scoreManager: ScoreStorage = ListScoreManager(
-            mutableListOf(
-                "123000 - Pepito Domingez",
-                "111000 - Pedro Martinez",
-                "011000 - Paco Pérez"
+        var scoreManager: ScoreStorage =
+            ListScoreManager(
+                mutableListOf(
+                    "123000 - Pepito Domingez",
+                    "111000 - Pedro Martinez",
+                    "011000 - Paco Pérez"
+                )
             )
-        )
         const val GAME_ACTIVITY = 0
         const val PREFERENCE_ACTIVITY = 1
     }
@@ -193,6 +194,10 @@ class MainActivity : AppCompatActivity() {
 
             "relational" -> {
                 scoreManager = RelDatabaseScoreManager(this)
+            }
+
+            "sockets" -> {
+                scoreManager = SocketScoreManager(this)
             }
         }
     }

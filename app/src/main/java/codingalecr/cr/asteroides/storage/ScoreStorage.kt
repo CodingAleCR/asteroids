@@ -1,4 +1,4 @@
-package codingalecr.cr.asteroides.utils
+package codingalecr.cr.asteroides.storage
 
 interface ScoreStorage {
     fun storeScore(points: Int, name: String, date: Long)

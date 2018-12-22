@@ -1,8 +1,7 @@
-package codingalecr.cr.asteroides.utils;
+package codingalecr.cr.asteroides.storage;
 
 import android.content.Context;
 import android.util.Log;
-import codingalecr.cr.asteroides.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;

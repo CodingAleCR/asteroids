@@ -40,6 +40,7 @@
         <item>Clase con JSON Object</item>
         <item>Base de Datos SQLite</item>
         <item>Base de Datos Relacional SQLite</item>
+        <item>Sockets</item>
     </string-array>
     <string-array name="storageTypesValues">
         <item>array</item>
@@ -53,5 +54,6 @@
         <item>json</item>
         <item>database</item>
         <item>relational</item>
+        <item>sockets</item>
     </string-array>
 </resources>

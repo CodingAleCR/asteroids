@@ -1,4 +1,4 @@
-package codingalecr.cr.asteroides.utils
+package codingalecr.cr.asteroides.storage
 
 class ListScoreManager(list: MutableList<String>) : ScoreStorage {
     private var scores = list

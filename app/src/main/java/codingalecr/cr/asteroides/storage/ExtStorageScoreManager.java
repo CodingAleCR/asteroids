@@ -1,7 +1,10 @@
-package codingalecr.cr.asteroides.utils;
+package codingalecr.cr.asteroides.storage;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
+import codingalecr.cr.asteroides.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -11,19 +14,24 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IntStorageScoreManager implements ScoreStorage {
+public class ExtStorageScoreManager implements ScoreStorage {
 
-    private static String FILE = "puntuaciones.txt";
+    private static String FILE = Environment.getExternalStorageDirectory() + "/puntuaciones.txt";
     private Context mContext;
 
-    public IntStorageScoreManager(Context mContext) {
+    public ExtStorageScoreManager(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
     public void storeScore(int points, @NotNull String name, long date) {
+        String stadoSD = Environment.getExternalStorageState();
+        if (!stadoSD.equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(mContext, R.string.text_external_storage_write_not_available, Toast.LENGTH_LONG).show();
+            return;
+        }
         try {
-            FileOutputStream f = mContext.openFileOutput(FILE, Context.MODE_APPEND);
+            FileOutputStream f = new FileOutputStream(FILE, true);
             String texto = points + " " + name + "\n";
             f.write(texto.getBytes());
             f.close();
@@ -36,8 +44,15 @@ public class IntStorageScoreManager implements ScoreStorage {
     @Override
     public List<String> scoresList(int quantity) {
         List<String> result = new ArrayList<>();
+
+        String stadoSD = Environment.getExternalStorageState();
+        if (!stadoSD.equals(Environment.MEDIA_MOUNTED) &&
+                !stadoSD.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
+            Toast.makeText(mContext, R.string.text_external_storage_read_not_available, Toast.LENGTH_LONG).show();
+            return result;
+        }
         try {
-            FileInputStream f = mContext.openFileInput(FILE);
+            FileInputStream f = new FileInputStream(FILE);
             BufferedReader input = new BufferedReader(new InputStreamReader(f));
             int n = 0;
             String line;

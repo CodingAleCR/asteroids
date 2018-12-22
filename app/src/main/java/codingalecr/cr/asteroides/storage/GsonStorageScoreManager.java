@@ -1,4 +1,4 @@
-package codingalecr.cr.asteroides.utils;
+package codingalecr.cr.asteroides.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
