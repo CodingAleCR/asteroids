@@ -223,12 +223,20 @@ class MainActivity : AppCompatActivity() {
                 scoreManager = SocketScoreManager(this)
             }
 
+            "socketasync" -> {
+                scoreManager = AsyncSocketScoreManager(this)
+            }
+
             "upv" -> {
                 scoreManager = WebServiceScoreManager(this, "http://158.42.146.127/puntuaciones/")
             }
 
             "heroku" -> {
                 scoreManager = WebServiceScoreManager(this, "http://asteroides-crc.herokuapp.com/puntuaciones/")
+            }
+
+            "async" -> {
+                scoreManager = AsyncWebServiceScoreManager(this, "http://158.42.146.127/puntuaciones/")
             }
         }
     }

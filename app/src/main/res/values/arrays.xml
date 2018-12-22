@@ -41,8 +41,10 @@
         <item>Base de Datos SQLite</item>
         <item>Base de Datos Relacional SQLite</item>
         <item>Sockets</item>
+        <item>Async Sockets</item>
         <item>Web Service UPV</item>
         <item>Web Service Custom</item>
+        <item>Web Service AsyncTask</item>
     </string-array>
     <string-array name="storageTypesValues">
         <item>array</item>
@@ -57,7 +59,9 @@
         <item>database</item>
         <item>relational</item>
         <item>sockets</item>
+        <item>socketasync</item>
         <item>upv</item>
         <item>heroku</item>
+        <item>async</item>
     </string-array>
 </resources>
