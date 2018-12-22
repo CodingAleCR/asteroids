@@ -45,7 +45,7 @@ _Extras:_
 - [ ] Ejercicio: Acceso a PuntuacionesProvider desde Asteroides
 - [ ] Desafío: Permitir seleccionar diferentes almacenamientos externos
 
-### Unidad 
+### Unidad 8
 - [X] No existen ejercicios.
 
 ### Unidad 7
